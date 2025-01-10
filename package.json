@@ -11,13 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "escpos": "^3.0.0-alpha.6",
+    "escpos-network": "^3.0.0-alpha.5",
     "escpos-usb": "^3.0.0-alpha.4",
     "express": "^4.21.2"
   },
   "pkg": {
-  "assets": [
-    "node_modules/escpos/**/*",
-    "node_modules/usb/**/*"
-  ]
-}
+    "assets": [
+      "node_modules/escpos/**/*",
+      "node_modules/usb/**/*"
+    ]
+  }
 }
