@@ -1,18 +1,25 @@
 # NodePrint
 Micro servicio de impresión en impresoras esc/pos desde petición http.
 
-## Instalación
+## Requisitos
+Nodejs >= 21
+
+## Despliegue
 ```bash
 npm i
 node index.js
 ```
 
 ## Uso
-Para imprimir se debe hacer mediante petición **POST** enviando el siguiente objeto **JSON**:
+### Impresión de prueba ```GET http://localhost:3010/test```
+Devuelve los datos de la impresora y hace una impresión de prueba
+
+### Impresión de ticket ```POST http://localhost:3010/print```
+Cuerpo de la petición:
 
 ```json
 {
-    "templeate" : "", // "", "comanda"
+    "templeate" : "",
     "company_name": "DesarrolloCreativo",
     "sale_number": "001",
     "payment_type" : "Efectivo",
@@ -39,16 +46,24 @@ Para imprimir se debe hacer mediante petición **POST** enviando el siguiente ob
     ]
 }
 ```
+NOTA: si se deja vacío "***template***" se imprime el ticket y la comanda, si solo se desea imprimir la comanda se de escribir "***comanda***".
 
 ## Generar binario
 ```bash
 npm install -g pkg
-pkg -t node18-win-x64
+pkg -t node18-win-x64 .
 ```
 Nota: Puede cambiar la versión de nodejs con la intalada en su computadora ***node -v***. En caso de estar usar windows puede que no funcione el comando **pgk**, por lo que deberá abrir **PowerShell** como administrador y ejecutar ***Set-ExecutionPolicy Unrestricted***.
 
+## Instalación
+Debido a que al ejecutar el programa se abre una terminal (lo cual es poco estético), se debe ejecutar desde un archivo ```.bat```.
+
+1. Copiar el ejecutable ```node-print.exe``` en un directorio que no corra peligro de ser eliminado. Ej: ```C:\desarrollocreativo\tools```.
+2. Presionar ```Win+R``` y ejecutar ```shell:startup```, copiar el archivo ```iniciar-impresora.bat``` y reemplazar la ruta del archivo con ```C:\desarrollocreativo\tools\node-print.exe```.
+3. Reiniciar el equipo e ingresar a la url ```http://localhost:3010/test``` para verificar si el servicio se está ejecutando.
+
 ## Problemas frecuentes
-### Bug en la librería
+### Bug en la librería ```escpos-usb ^3.0.0-alpha.4```
 Reemplazar la línea 52 del archivo ***node_modules\escpos-usb\index.js***
 ```
 usb.usb.on('detach', function(device){

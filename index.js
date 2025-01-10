@@ -3,12 +3,56 @@ const escpos = require('escpos'); // Módulo escpos
 escpos.USB = require('escpos-usb'); // Soporte para USB
 
 const app = express();
-const port = 3000;
+const port = 3010;
 
 // Middleware para manejar JSON
 app.use(express.json());
 
 // Ruta para imprimir ticket
+app.get('/', (req, res) => {
+    console.log('Servicio activo')
+    res.send({success: 1, message: 'Servicio activo'});
+})
+
+app.get('/test', (req, res) => {
+    try {
+        console.log('Servicio activo')
+        var device = null;
+        try {
+            device = new escpos.USB();
+            const printer = new escpos.Printer(device);
+
+            device.open((error) => {
+                if (error) {
+                    console.error('Error al abrir la impresora:', error);
+                }
+                printer
+                    .size(1, 1)
+                    .align('ct').style('NORMAL')
+                    .text(`Impresión de pruba`)
+                    .size(0, 0)
+                    .text('desarrollocreativo.dev')
+                printer.text('');
+                printer.cut();
+                printer.close();
+            });
+
+        } catch (error) {
+            console.log('Error al conectarse a la impresora')
+        }
+        res.send({
+            success: 1,
+            message: 'Servidor activo',
+            details: {
+                print: device
+            }
+        });
+    } catch (error) {
+        console.error('Error en la petición', error);
+        res.status(500).send({error: 1, message: 'Error en la petición http'});
+    }
+});
+
 app.post('/print', (req, res) => {
     try {
         var { templeate } = req.body;
