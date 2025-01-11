@@ -46,12 +46,12 @@ Cuerpo de la petición:
     ]
 }
 ```
-NOTA: si se deja vacío "***template***" se imprime el ticket y la comanda, si solo se desea imprimir la comanda se de escribir "***comanda***".
+NOTA: si se deja vacío "***template***" se imprime el ticket y la comanda, si solo se desea imprimir la comanda se debe escribir "***comanda***".
 
 ## Generar binario
 ```bash
 npm install -g pkg
-pkg -t node18-win-x64 .
+pkg -t node18-win-x64 -o node-print .
 ```
 Nota: Puede cambiar la versión de nodejs con la intalada en su computadora ***node -v***. En caso de estar usar windows puede que no funcione el comando **pgk**, por lo que deberá abrir **PowerShell** como administrador y ejecutar ***Set-ExecutionPolicy Unrestricted***.
 

@@ -1,12 +1,21 @@
 const express = require('express');
+const cors = require('cors');
 const escpos = require('escpos'); // Módulo escpos
 escpos.USB = require('escpos-usb'); // Soporte para USB
 
 const app = express();
 const port = 3010;
+const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+ }
 
 // Middleware para manejar JSON
 app.use(express.json());
+
+app.use(cors(corsOptions))
+app.options('*', cors());
 
 // Ruta para imprimir ticket
 app.get('/', (req, res) => {
