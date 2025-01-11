@@ -15,6 +15,9 @@ node index.js
 Devuelve los datos de la impresora y hace una impresión de prueba
 
 ### Impresión de ticket ```POST http://localhost:3010/print```
+
+> **IMPORTANTE:** En el caso de que que la impresora esté en red se debe enviar en la petición la ```ip``` y el ```puerto``` (opcional) de la impresora ```?ip=192.168.1.1&port=```
+
 Cuerpo de la petición:
 
 ```json
@@ -46,14 +49,14 @@ Cuerpo de la petición:
     ]
 }
 ```
-NOTA: si se deja vacío "***template***" se imprime el ticket y la comanda, si solo se desea imprimir la comanda se debe escribir "***comanda***".
+> **NOTA:** si se deja vacío "***template***" se imprime el ticket y la comanda, si solo se desea imprimir la comanda se de escribir "***comanda***".
 
 ## Generar binario
 ```bash
 npm install -g pkg
 pkg -t node18-win-x64 -o node-print .
 ```
-Nota: Puede cambiar la versión de nodejs con la intalada en su computadora ***node -v***. En caso de estar usar windows puede que no funcione el comando **pgk**, por lo que deberá abrir **PowerShell** como administrador y ejecutar ***Set-ExecutionPolicy Unrestricted***.
+> **NOTA:** Puede cambiar la versión de nodejs con la intalada en su computadora ***node -v***. En caso de estar usar windows puede que no funcione el comando **pgk**, por lo que deberá abrir **PowerShell** como administrador y ejecutar ***Set-ExecutionPolicy Unrestricted***.
 
 ## Instalación
 Debido a que al ejecutar el programa se abre una terminal (lo cual es poco estético), se debe ejecutar desde un archivo ```.bat```.

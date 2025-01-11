@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const escpos = require('escpos'); // Módulo escpos
 escpos.USB = require('escpos-usb'); // Soporte para USB
+escpos.Network = require('escpos-network'); // Soporte para red
 
 const app = express();
 const port = 3010;
@@ -15,7 +16,6 @@ const corsOptions ={
 app.use(express.json());
 
 app.use(cors(corsOptions))
-app.options('*', cors());
 
 // Ruta para imprimir ticket
 app.get('/', (req, res) => {
@@ -25,10 +25,14 @@ app.get('/', (req, res) => {
 
 app.get('/test', (req, res) => {
     try {
-        console.log('Servicio activo')
+        console.log('Servicio activo');
+
+        const { ip, port } = req.query;
+
         var device = null;
         try {
-            device = new escpos.USB();
+            // Si se envía la IP mediante un parámetro get se usa el conector de res, sino el de USB
+            device = ip ? new escpos.Network(ip, port ? port : 9100) : new escpos.USB();
             const printer = new escpos.Printer(device);
 
             device.open((error) => {
@@ -84,11 +88,14 @@ app.post('/print', (req, res) => {
 
 function printTemplateNormal(req){
     try {
-        // Datos del cuerpo de la solicitud
-        const { company_name, sale_number, payment_type, sale_type, table_number, discount, details, observations } = req.body;
 
-        // Conectar a la impresora USB
-        const device = new escpos.USB(); // Detecta automáticamente el dispositivo
+        const { ip, port } = req.query;
+
+        // Datos del cuerpo de la solicitud
+        const { company_name, sale_number, payment_type, sale_type, table_number, discount, details } = req.body;
+
+        // Si se envía la ip mediante un parámetro get se usa el conector de res, sino el de USB
+        const device = ip ? new escpos.Network(ip, port ? port : 9100) : new escpos.USB();
         const printer = new escpos.Printer(device);
 
         device.open((error) => {
@@ -142,11 +149,14 @@ function printTemplateNormal(req){
 
 function printComanda(req){
     try {
-        // Datos del cuerpo de la solicitud
-        const { sale_number, sale_type, table_number, discount, details, observations } = req.body;
 
-        // Conectar a la impresora USB
-        const device = new escpos.USB(); // Detecta automáticamente el dispositivo
+        const { ip, port } = req.query;
+
+        // Datos del cuerpo de la solicitud
+        const { sale_number, sale_type, table_number, details, observations } = req.body;
+
+        // Si se envía la ip mediante un parámetro get se usa el conector de res, sino el de USB
+        const device = ip ? new escpos.Network(ip, port ? port : 9100) : new escpos.USB();
         const printer = new escpos.Printer(device);
 
         device.open((error) => {
