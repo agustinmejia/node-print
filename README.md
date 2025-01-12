@@ -22,7 +22,7 @@ Cuerpo de la petición:
 
 ```json
 {
-    "templeate" : "",
+    "templeate" : "normal",
     "company_name": "DesarrolloCreativo",
     "sale_number": "001",
     "payment_type" : "Efectivo",
@@ -49,7 +49,7 @@ Cuerpo de la petición:
     ]
 }
 ```
-> **NOTA:** si se deja vacío "***template***" se imprime el ticket y la comanda, si solo se desea imprimir la comanda se de escribir "***comanda***".
+> **NOTA:** ***template: 'normal'*** imprime el ticket y la comanda, si solo se desea imprimir la comanda se debe escribir "***comanda***".
 
 ## Generar binario
 ```bash
