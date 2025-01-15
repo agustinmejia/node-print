@@ -102,7 +102,7 @@ function printTemplateNormal(req){
         const { ip, port } = req.query;
 
         // Datos del cuerpo de la solicitud
-        var { company_name, sale_number, payment_type, sale_type, table_number, discount, details, font_size } = req.body;
+        var { company_name, sale_number, payment_type, sale_type, table_number, discount, customer, details, font_size } = req.body;
 
         // Formatear el valor para evitar errores
         font_size = !isNaN(font_size) ? parseInt(font_size) : 0;
@@ -122,8 +122,19 @@ function printTemplateNormal(req){
             printer
                 .align('ct').style('B').size(1 + font_size, 1).text(company_name) // Nombre del restaurante
                 .size(0 + font_size, 0)
-                .align('ct').style('NORMAL').text(`Ticket ${sale_number}`) // Número de ticket
-                .align('ct').style('NORMAL').text(`${sale_type}${table_number ? ' '+table_number : ''}`) // Número de mesa
+                .align('ct').style('B')
+                .text(`Ticket ${sale_number}`) // Número de ticket
+                .text(`${sale_type}${table_number ? ' '+table_number : ''}`) // Número de mesa
+                .style('NORMAL')
+                
+                // Datos del cliente
+                .align('lt')
+                .text('')
+                .tableCustom([
+                    { text: 'Nombre:', align: 'LEFT'},
+                    { text: customer, align: 'RIGHT'}
+                ])
+                
                 .size(0, 0)
                 .drawLine()
                 .size(0 + font_size, 0)
@@ -185,11 +196,11 @@ function printTicket(req){
             // Iniciar impresión
             printer
                 .size(1, 1)
-                .align('ct').style('NORMAL').text(company_name)
+                .align('ct').style('B').text(company_name)
                 .size(2, 3)
                 .align('ct').style('NORMAL').text(`Ticket ${sale_number}`)
                 .size(1, 1)
-                .align('ct').style('NORMAL').text(`${sale_type}${table_number ? ' '+table_number : ''}`);
+                .align('ct').style('B').text(`${sale_type}${table_number ? ' '+table_number : ''}`);
             printer.text('');
             printer.cut();
             printer.close();
@@ -208,7 +219,7 @@ function printComanda(req){
         const { ip, port } = req.query;
 
         // Datos del cuerpo de la solicitud
-        var { sale_number, sale_type, table_number, details, observations, font_size } = req.body;
+        var { sale_number, sale_type, table_number, customer, details, observations, font_size } = req.body;
 
         // Formatear el valor para evitar errores
         font_size = !isNaN(font_size) ? parseInt(font_size) : 0;
@@ -226,8 +237,19 @@ function printComanda(req){
             // Iniciar impresión
             printer
                 .size(0 + font_size, 0)
-                .align('ct').style('NORMAL').text(`Ticket ${sale_number}`)
-                .align('ct').style('NORMAL').text(`${sale_type}${table_number ? ' '+table_number : ''}`)
+                .align('ct').style('B')
+                .text(`Ticket ${sale_number}`)
+                .text(`${sale_type}${table_number ? ' '+table_number : ''}`)
+                .style('NORMAL')
+
+                // Datos del cliente
+                .align('lt')
+                .text('')
+                .tableCustom([
+                    { text: 'Nombre:', align: 'LEFT'},
+                    { text: customer, align: 'RIGHT'}
+                ])
+
                 .size(0, 0)
                 .drawLine()
                 .size(0 + font_size, 0)
